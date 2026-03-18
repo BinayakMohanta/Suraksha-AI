@@ -168,11 +168,11 @@ During this project we learned:
 
 ## Future Improvements
 
-#🚀 Integration with gig platforms (Swiggy, Zomato)
-#📱 Mobile application development
-#🤖 Advanced ML models for prediction
-#🛡 Fraud detection system
-#🌍 Expansion to ride-sharing drivers and freelancers
+*🚀 Integration with gig platforms (Swiggy, Zomato)
+*📱 Mobile application development
+*🤖 Advanced ML models for prediction
+*🛡 Fraud detection system
+*🌍 Expansion to ride-sharing drivers and freelancers
 
 ---
 
