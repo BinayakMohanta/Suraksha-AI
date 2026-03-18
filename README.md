@@ -40,12 +40,12 @@ The system monitors **real-time external conditions** and triggers payouts autom
 
 # System Workflow
 
-1️⃣ Worker registers on the platform
-2️⃣ AI analyzes risk based on location and environmental factors
-3️⃣ Policy with weekly premium is generated
-4️⃣ APIs continuously monitor weather and pollution data
-5️⃣ Parametric triggers detect disruptions
-6️⃣ Automatic payout is issued when conditions are met
+*1️⃣ Worker registers on the platform
+*2️⃣ AI analyzes risk based on location and environmental factors
+*3️⃣ Policy with weekly premium is generated
+*4️⃣ APIs continuously monitor weather and pollution data
+*5️⃣ Parametric triggers detect disruptions
+*6️⃣ Automatic payout is issued when conditions are met
 
 ---
 
