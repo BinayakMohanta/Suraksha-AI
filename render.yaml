@@ -3,7 +3,7 @@ services:
     name: secure-gig-guardian
     env: docker
     repo: https://github.com/TIRTHANATH20/secure-gig-guardian
-    branch: policy-mgmt
+    branch: main
     dockerfilePath: Dockerfile
     plan: free
     autoDeploy: true
