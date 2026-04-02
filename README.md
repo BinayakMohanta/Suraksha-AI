@@ -102,6 +102,18 @@ Notes:
 
 - If `MONGODB_URI` is not set or the database is unreachable, the app falls back to an in-memory policy store (data will not persist across restarts). Set `MONGODB_URI` to enable persistence.
 - The Dockerfile already builds the frontend into `/app/dist` and the backend serves that folder when present.
+ - The Dockerfile already builds the frontend into `/app/dist` and the backend serves that folder when present.
+
+Seeding the database
+--------------------
+
+You can seed example policies into a MongoDB instance using the provided script. Set `MONGODB_URI` (and optionally `MONGODB_DB`/`MONGODB_COLLECTION`) and run:
+
+```bash
+MONGODB_URI="mongodb+srv://<user>:<pass>@cluster0.abcd.mongodb.net" python scripts/seed_policies.py
+```
+
+This inserts three sample policies (`POL-001`, `POL-002`, `POL-003`) and will skip duplicates.
 
 
 ## Quick Start Guide
