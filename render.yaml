@@ -18,7 +18,7 @@ services:
   - type: web
     name: secure-gig-guardian
     env: docker
-    repo: https://github.com/TIRTHANATH20/secure-gig-guardian
+    repo: https://github.com/ArjunJayakrishnan-codes/secure-gig-guardian
     branch: main
     dockerfilePath: Dockerfile
     plan: free
