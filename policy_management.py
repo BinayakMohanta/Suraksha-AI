@@ -112,24 +112,28 @@ class _InMemoryCollection:
             return r
 
 
-MONGO_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+MONGO_URI = os.getenv("MONGODB_URI")
 MONGO_DB = os.getenv("MONGODB_DB", "secure_gig_guardian")
 MONGO_COLLECTION = os.getenv("MONGODB_COLLECTION", "insurance_policies")
 
 client = None
 collection = None
 
-try:
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
-    db = client[MONGO_DB]
-    collection = db[MONGO_COLLECTION]
-    collection.create_index("policy_number", unique=True, sparse=True)
-except PyMongoError as exc:
-    print(f"MongoDB initialization error: {exc}")
-    client = None
-    # fall back to in-memory collection so the app remains usable without MongoDB
+# Only attempt to initialize MongoDB if a URI is explicitly provided.
+if MONGO_URI:
+    try:
+        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+        db = client[MONGO_DB]
+        collection = db[MONGO_COLLECTION]
+        collection.create_index("policy_number", unique=True, sparse=True)
+    except PyMongoError as exc:
+        print(f"MongoDB initialization error: {exc}")
+        client = None
+        collection = _InMemoryCollection()
+        print("Using in-memory policy store as fallback.")
+else:
+    print("MONGODB_URI not set; using in-memory policy store.")
     collection = _InMemoryCollection()
-    print("Using in-memory policy store as fallback.")
 
 
 def _serialize_policy(doc: Dict[str, Any]) -> Dict[str, Any]:
