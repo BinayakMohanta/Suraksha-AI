@@ -1,6 +1,6 @@
 fastapi
 uvicorn[standard]
 numpy
-scikit-learn
+scikit-learn==1.7.1
 joblib
 pymongo
