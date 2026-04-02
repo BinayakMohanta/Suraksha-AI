@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "start": "sh -c \"python -m pip install -r requirements.txt && npm run build && python -m uvicorn api_server:app --host 0.0.0.0 --port ${PORT:-10000}\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
