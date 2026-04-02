@@ -23,7 +23,9 @@ COPY --from=frontend-build /app/dist ./dist
 
 # Copy Python code and requirements (include model.joblib if present)
 COPY requirements.txt ./
-COPY api_server.py dynamic_pricing.py model.joblib* ./
+# Copy all top-level Python files so backend modules (policy_management.py, etc.) are available
+COPY ./*.py ./
+COPY model.joblib* ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
