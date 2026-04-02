@@ -30,5 +30,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV PORT 10000
 EXPOSE 10000
 
-# Use Uvicorn to run FastAPI; Render sets $PORT at runtime.
-CMD ["uvicorn", "api_server:app", "--host", "0.0.0.0", "--port", "${PORT}"]
+# Use a shell form CMD so environment variable expansion works at runtime on Render.
+# Default to 10000 if PORT is not set.
+CMD ["sh", "-c", "uvicorn api_server:app --host 0.0.0.0 --port ${PORT:-10000}"]
