@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import traceback
 
 import dynamic_pricing as dp
@@ -19,6 +20,10 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
     expose_headers=["*"],
 )
+
+# Serve frontend if built into `dist/`
+if os.path.isdir("dist"):
+    app.mount("/", StaticFiles(directory="dist", html=True), name="static")
 
 
 class PredictRequest(BaseModel):
