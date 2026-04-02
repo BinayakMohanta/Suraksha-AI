@@ -33,7 +33,7 @@ class PredictRequest(BaseModel):
     safe_zone: float = Field(ge=0, le=1, description="Safe zone score between 0 and 1")
 
 
-@app.options("/predict")
+@app.options("/api/predict")
 async def options_predict():
     """Handle CORS preflight requests"""
     return {"message": "OK"}
@@ -61,7 +61,7 @@ def startup_event():
         raise
 
 
-@app.post("/predict")
+@app.post("/api/predict")
 def predict(req: PredictRequest):
     try:
         # Validate inputs
