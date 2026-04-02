@@ -1,0 +1,9 @@
+<svg width="150" height="39" viewBox="0 0 150 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield Icon -->
+  <rect x="8" y="8" width="24" height="26" rx="2" fill="none" stroke="#FF6B35" stroke-width="2"/>
+  <path d="M20 14L26 20M26 14L20 20" stroke="#FF6B35" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Text: Secure Gig Guardian -->
+  <text x="40" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Secure Gig</text>
+  <text x="40" y="34" font-family="Arial, sans-serif" font-size="10" font-weight="normal" fill="#90EE90">Guardian</text>
+</svg>
