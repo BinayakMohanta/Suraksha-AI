@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
 interface Policy {
@@ -56,6 +56,7 @@ const ClaimsManagement = () => {
   const authHeaders = async (includeJson = false) => {
     const headers: Record<string, string> = {};
     if (includeJson) headers["Content-Type"] = "application/json";
+    const supabase = getSupabase();
     if (!supabase) return headers;
     const { data } = await supabase.auth.getSession();
     const token = data?.session?.access_token;

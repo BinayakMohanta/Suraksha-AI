@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/client";
 
 interface Policy {
   id: string;
@@ -86,6 +86,7 @@ const PolicyManagement = () => {
     if (includeJsonContentType) {
       headers["Content-Type"] = "application/json";
     }
+    const supabase = getSupabase();
     if (!supabase) return headers;
     const { data } = await supabase.auth.getSession();
     const token = data?.session?.access_token;
