@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
 
 async function bootstrap() {
@@ -16,6 +15,7 @@ async function bootstrap() {
 		// Ignore bootstrap failures; env-based config may still be available.
 	}
 
+	const { default: App } = await import("./App.tsx");
 	createRoot(document.getElementById("root")!).render(<App />);
 }
 
