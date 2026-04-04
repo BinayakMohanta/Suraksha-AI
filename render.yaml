@@ -20,3 +20,5 @@ services:
         value: ""
       - key: SUPABASE_ANON_KEY
         value: ""
+      - key: VITE_SUPABASE_ANON_KEY
+        value: ""

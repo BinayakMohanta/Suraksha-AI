@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 
-from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException, Response
 from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -44,6 +44,7 @@ SUPABASE_ANON_KEY = (
     os.getenv("SUPABASE_ANON_KEY")
     or os.getenv("SUPABASE_PUBLISHABLE_KEY")
     or os.getenv("VITE_SUPABASE_PUBLISHABLE_KEY")
+    or os.getenv("VITE_SUPABASE_ANON_KEY")
 )
 
 app = FastAPI(title="Dynamic Pricing API")
@@ -312,8 +313,11 @@ def health_check():
 
 
 @app.get("/api/public-config")
-def public_config():
+def public_config(response: Response):
     """Runtime-safe config for frontend bootstrap (Render Docker runtime envs)."""
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
     return {
         "supabaseUrl": SUPABASE_URL or "",
         "supabasePublishableKey": SUPABASE_ANON_KEY or "",
