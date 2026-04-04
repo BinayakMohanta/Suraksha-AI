@@ -93,6 +93,8 @@ SUPABASE_URL=https://<your-project-ref>.supabase.co
 SUPABASE_ANON_KEY=<your-anon-publishable-key>
 ```
 
+For Docker deployments on Render, runtime environment variables are enough: the frontend now bootstraps Supabase config from `/api/public-config` if Vite `VITE_*` vars were not present at build time.
+
 - Users sign in/sign up from the `/auth` page.
 - Protected pages are guarded client-side by Supabase session state (`AuthProvider` + `ProtectedRoute`).
 - Policy API ownership checks are enforced server-side using the Supabase bearer token and user identity.

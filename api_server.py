@@ -311,6 +311,15 @@ def health_check():
     return {"status": "ok"}
 
 
+@app.get("/api/public-config")
+def public_config():
+    """Runtime-safe config for frontend bootstrap (Render Docker runtime envs)."""
+    return {
+        "supabaseUrl": SUPABASE_URL or "",
+        "supabasePublishableKey": SUPABASE_ANON_KEY or "",
+    }
+
+
 @app.post("/api/predict")
 def predict(req: PredictRequest):
     try:
