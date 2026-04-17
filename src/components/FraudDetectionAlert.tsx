@@ -174,6 +174,19 @@ export const PayoutBannerEnhanced: React.FC<{ claim: any }> = ({ claim }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const parseError = async (response: Response) => {
+    const body = await response.json().catch(() => null);
+    if (!body) return response.statusText || "Unknown error";
+    if (typeof body.detail === "string") return body.detail;
+    return JSON.stringify(body.detail || body);
+  };
+
+  const getRecipientIdentifier = (gateway: "upi" | "razorpay" | "stripe") => {
+    if (gateway === "razorpay") return "123456789012";
+    if (gateway === "stripe") return "tok_visa";
+    return "worker@example.upi";
+  };
+
   const processPayout = async (gateway: "upi" | "razorpay" | "stripe") => {
     setLoading(true);
     setError(null);
@@ -190,14 +203,21 @@ export const PayoutBannerEnhanced: React.FC<{ claim: any }> = ({ claim }) => {
         body: JSON.stringify({
           claim_id: claim.id,
           amount: claim.claim_amount,
-          recipient_identifier: gateway === "upi" ? "worker@example.upi" : "worker@example.com",
+          recipient_identifier: getRecipientIdentifier(gateway),
           gateway,
         }),
       });
 
-      if (!response.ok) throw new Error("Payout failed");
+      if (!response.ok) throw new Error(await parseError(response));
       
       const data = await response.json();
+
+      // Backend may return HTTP 200 with a failed payout status.
+      if (data?.status === "failed") {
+        const backendError = data?.transaction_details?.error;
+        throw new Error(backendError || "Payout failed");
+      }
+
       setPayoutStatus(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
@@ -207,20 +227,40 @@ export const PayoutBannerEnhanced: React.FC<{ claim: any }> = ({ claim }) => {
   };
 
   if (payoutStatus) {
+    const normalizedStatus = (payoutStatus.status || "").toLowerCase();
+    const isSuccess = normalizedStatus === "success";
+    const isInFlight = normalizedStatus === "processing" || normalizedStatus === "pending";
+    const accent = isSuccess ? "green" : isInFlight ? "blue" : "red";
+
     return (
-      <Card className="border-2 border-green-300 bg-green-50">
+      <Card
+        className={`border-2 ${
+          accent === "green"
+            ? "border-green-300 bg-green-50"
+            : accent === "blue"
+            ? "border-blue-300 bg-blue-50"
+            : "border-red-300 bg-red-50"
+        }`}
+      >
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
-            <DollarSign className="h-5 w-5 text-green-600" />
-            <CardTitle className="text-green-800">Payout Successful</CardTitle>
+            <DollarSign className={`h-5 w-5 ${accent === "green" ? "text-green-600" : accent === "blue" ? "text-blue-600" : "text-red-600"}`} />
+            <CardTitle className={accent === "green" ? "text-green-800" : accent === "blue" ? "text-blue-800" : "text-red-800"}>
+              {isSuccess ? "Payout Successful" : isInFlight ? "Payout In Progress" : "Payout Failed"}
+            </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2 text-sm text-green-700">
+          <div className={`space-y-2 text-sm ${accent === "green" ? "text-green-700" : accent === "blue" ? "text-blue-700" : "text-red-700"}`}>
             <p><strong>Payout ID:</strong> {payoutStatus.payout_id}</p>
             <p><strong>Amount:</strong> ₹{payoutStatus.amount}</p>
             <p><strong>Gateway:</strong> {payoutStatus.gateway.toUpperCase()}</p>
-            <p><strong>Status:</strong> <Badge className="ml-2 bg-green-600">{payoutStatus.status}</Badge></p>
+            <p>
+              <strong>Status:</strong>{" "}
+              <Badge className={`ml-2 ${accent === "green" ? "bg-green-600" : accent === "blue" ? "bg-blue-600" : "bg-red-600"}`}>
+                {payoutStatus.status}
+              </Badge>
+            </p>
             
             {payoutStatus.transaction_details.settlement_time && (
               <p><strong>Expected Settlement:</strong> {payoutStatus.transaction_details.settlement_time}</p>
@@ -228,6 +268,10 @@ export const PayoutBannerEnhanced: React.FC<{ claim: any }> = ({ claim }) => {
             
             {payoutStatus.transaction_details.rrn && (
               <p className="font-mono text-xs"><strong>RRN:</strong> {payoutStatus.transaction_details.rrn}</p>
+            )}
+
+            {payoutStatus.transaction_details.error && (
+              <p><strong>Error:</strong> {payoutStatus.transaction_details.error}</p>
             )}
           </div>
         </CardContent>

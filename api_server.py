@@ -2,7 +2,6 @@ from typing import Any, Dict, List, Optional
 from datetime import datetime
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Response
-from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -1655,27 +1654,6 @@ def get_worker_details(worker_id: str, admin_id: str = Depends(require_admin)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Catch-all route for SPA routing. This serves built assets when requested
-# directly and falls back to index.html for client-side routes like /dashboard.
-@app.head("/")
-async def head_root():
-    index_path = os.path.join("dist", "index.html")
-    if os.path.isfile(index_path):
-        return Response(status_code=200)
-    raise HTTPException(status_code=404, detail="Frontend build not found")
-
-
-@app.get("/{full_path:path}")
-async def serve_spa(full_path: str):
-    if full_path.startswith("api/"):
-        raise HTTPException(status_code=404, detail="API route not found")
-
-    requested = os.path.join("dist", full_path)
-    if full_path and os.path.isfile(requested):
-        return FileResponse(requested)
-
-    index_path = os.path.join("dist", "index.html")
-    if os.path.isfile(index_path):
-        return FileResponse(index_path)
-
-    raise HTTPException(status_code=404, detail="Frontend build not found")
+# Serve frontend static files after API is defined so API routes aren't shadowed.
+if os.path.isdir("dist"):
+    app.mount("/", StaticFiles(directory="dist", html=True), name="static")

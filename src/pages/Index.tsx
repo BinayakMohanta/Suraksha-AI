@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import StatusHeader from "@/components/StatusHeader";
 import RiskPulse from "@/components/RiskPulse";
-import PayoutBanner from "@/components/PayoutBanner";
 import TelemetryCard from "@/components/TelemetryCard";
 import MicroLedger from "@/components/MicroLedger";
 import PolicyCard from "@/components/PolicyCard";
@@ -129,8 +128,6 @@ const Index = () => {
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           <section className="lg:col-span-5 h-full dashboard-section space-y-6 fade-up-enter" style={{ animationDelay: "150ms" }}>
-            <PayoutBanner />
-
             <RiskPulse level={risk.level} value={risk.value} label={risk.label} />
 
             <DynamicPricing onRiskUpdate={handleRiskUpdate} />

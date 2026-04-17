@@ -7,18 +7,21 @@ services:
     dockerfilePath: Dockerfile
     plan: free
     autoDeploy: true
+    healthCheckPath: /health
     envVars:
       - key: MONGODB_URI
-        value: ""
+        sync: false
       - key: MONGODB_DB
         value: "secure_gig_guardian"
       - key: MONGODB_COLLECTION
         value: "insurance_policies"
       - key: MONGODB_CLAIMS_COLLECTION
         value: "claims"
+      - key: MONGODB_PAYOUTS_COLLECTION
+        value: "payouts"
       - key: SUPABASE_URL
-        value: "https://wlapbbvommqeuvbkojzh.supabase.co"
+        sync: false
       - key: SUPABASE_ANON_KEY
-        value: "sb_publishable_-L2Az9pqH2iUrATyGMIEYQ_afk_fwkS"
-      - key: VITE_SUPABASE_ANON_KEY
-        value: "sb_publishable_-L2Az9pqH2iUrATyGMIEYQ_afk_fwkS"
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false

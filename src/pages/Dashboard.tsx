@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Shield, FileText, AlertTriangle, TrendingUp, Plus, DollarSign, Activity, TrendingDown, Zap, CheckCircle2 } from "lucide-react";
+import { Shield, FileText, AlertTriangle, TrendingUp, Plus, DollarSign, Activity, TrendingDown, CheckCircle2 } from "lucide-react";
 import { authenticatedFetch } from "@/lib/api-client";
 import PolicyManagement from "@/components/PolicyManagement";
 
@@ -508,13 +508,12 @@ function WorkerDashboard({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-2 border-green-200 bg-green-50">
           <CardContent className="pt-6">
-            <div className="flex items-start justify-between">
+            <div>
               <div>
                 <p className="text-xs text-green-700 font-semibold">EARNINGS PROTECTED</p>
                 <p className="text-3xl font-bold text-green-900 mt-2">₹{totalCoverage.toLocaleString()}</p>
                 <p className="text-sm text-green-700 mt-1">{activePolicies.length} active policies</p>
               </div>
-              <Zap className="h-8 w-8 text-green-600" />
             </div>
           </CardContent>
         </Card>
